@@ -64,29 +64,29 @@ function App(): JSX.Element {
   // };
 
   return (
-    // <ImageBackground
-    //   resizeMode="cover"
-    //   //   source={require('./Assets/bgImage.jpg')}
-    //   style={styles.image}>
-    <View style={styles.container}>
-      <SafeAreaView>
-        <ScrollView>
-          <View>
-            <Text style={styles.sectionTitle}>Simple Calculator</Text>
-            <View style={styles.calcBox}>
-              <Text style={styles.outputText}>
-                {calculation || 'Enter a number'}
-              </Text>
+    <ImageBackground
+      resizeMode="cover"
+      source={require('./Assets/bgImage.jpg')}
+      style={styles.image}>
+      <View style={styles.container}>
+        <SafeAreaView>
+          <ScrollView>
+            <View>
+              <Text style={styles.sectionTitle}>Simple Calculator</Text>
+              <View style={styles.calcBox}>
+                <Text style={styles.outputText}>
+                  {calculation || 'Enter a number'}
+                </Text>
+              </View>
+              <CalcButtons updateCalculation={updateCalculation} />
+              <NumberButtons updateCalculation={updateCalculation} />
+              {/* <DbButtons sqlOperation={sqlOperation} /> */}
+              {/* <GetDb /> */}
             </View>
-            <CalcButtons updateCalculation={updateCalculation} />
-            <NumberButtons updateCalculation={updateCalculation} />
-            {/* <DbButtons sqlOperation={sqlOperation} /> */}
-            {/* <GetDb /> */}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </View>
-    // </ImageBackground>
+          </ScrollView>
+        </SafeAreaView>
+      </View>
+    </ImageBackground>
   );
 }
 
