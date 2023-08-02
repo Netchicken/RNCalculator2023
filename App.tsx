@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -7,10 +8,9 @@ import {
   ImageBackground,
 } from 'react-native';
 
-import React, {useState} from 'react';
 import {CalcButtons} from './Components/CalcButtons';
 import {NumberButtons} from './Components/NumberButton';
-// import {DbButtons} from './Components/DbButtons';
+
 import {LoadDB} from './Operations/DbOperations';
 
 function App(): JSX.Element {
@@ -37,23 +37,6 @@ function App(): JSX.Element {
       setCalculation(result);
     }
   };
-  //Database functions
-  //value = the new answer to be added to the database
-  // const sqlOperation = (value: Data) => {
-  //   console.log('App sqlOperation ', value);
-  //   // let result = [];
-  //   if (value === 'Display') {
-  //     PassData(value);
-  //   }
-  //console.log('App sqlOperation ', JSON.stringify(res));
-
-  // DbDisplay = [result];
-
-  // DbDisplay.map((item, index) => {
-  //   console.log('App DbDisplay ', item.answer);
-  // });
-  // }
-  // };
 
   return (
     <ImageBackground
@@ -73,7 +56,6 @@ function App(): JSX.Element {
               <CalcButtons updateCalculation={updateCalculation} />
               <NumberButtons updateCalculation={updateCalculation} />
               {/* <DbButtons sqlOperation={sqlOperation} /> */}
-              <LoadDB />
             </View>
           </ScrollView>
         </SafeAreaView>
@@ -137,7 +119,7 @@ const styles = StyleSheet.create({
   outputText: {
     fontWeight: 'bold',
     textAlignVertical: 'center',
-    textAlignment: 'right',
+    // textAlignment: 'right',
     fontSize: 30,
   },
 });

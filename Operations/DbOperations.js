@@ -3,14 +3,32 @@ import SQLite from 'react-native-sqlite-2';
 import {
   StyleSheet, // CSS-like styles
   Text, // Renders text
-  TouchableOpacity, // Handles row presses
+  //TouchableOpacity,  Handles row presses
   SafeAreaView,
   ScrollView,
   View,
-  Section,
+  //Section,
 } from 'react-native';
 
 const [listAnswers, setlistAnswers] = useState([]);
+
+//Database functions
+//value = the new answer to be added to the database
+// const sqlOperation = (value: Data) => {
+//   console.log('App sqlOperation ', value);
+//   // let result = [];
+//   if (value === 'Display') {
+//     PassData(value);
+//   }
+//console.log('App sqlOperation ', JSON.stringify(res));
+
+// DbDisplay = [result];
+
+// DbDisplay.map((item, index) => {
+//   console.log('App DbDisplay ', item.answer);
+// });
+// }
+// };
 
 export const LoadDB = () => {
   const db = SQLite.openDatabase('calcDB.db', '1.0', '', 1);
@@ -111,9 +129,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-//  <FlatList
-//    data={DbDisplay}
-//    style={styles.liContainer}
-//    renderItem={({item}) => <Text style={styles.liText}>{item.answer}</Text>}
-//  />;
