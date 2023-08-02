@@ -9,74 +9,24 @@ import {
   View,
   Section,
 } from 'react-native';
-//import SQLiteStorage from 'react-native-sqlite-storage';
-//https://www.npmjs.com/package/react-native-sqlite-2
 
-const databaseName = 'calcDB.db';
-const tableName = 'AllAnswers';
-const fieldName = 'answer';
-let db;
-const listAnswers = [];
-let singleAnswer = '';
-//https://medium.com/infinitbility/react-native-sqlite-storage-422503634dd2
+const [listAnswers, setlistAnswers] = useState([]);
 
-//https://github.com/craftzdog/react-native-sqlite-2#readme
-
-export const PassData = ({data}) => {
-  singleAnswer = data;
-};
-
-export const GetDb = () => {
-  db = SQLite.openDatabase({
-    name: 'calcDB',
-    location: 'default',
-    createFromLocation: '~calcDB.db',
-  });
-  console.log(
-    'getDb Answers db',
-    JSON.stringify(db) + ' ' + JSON.stringify(singleAnswer),
-  );
-
-  let params = [];
-  // const createString2 =
-  //   'CREATE TABLE "AllAnswers" ("Id"	INTEGER NOT NULL UNIQUE,	"answer"	TEXT,	PRIMARY KEY("Id" AUTOINCREMENT))';
-  const createString =
-    'CREATE TABLE IF NOT EXISTS AllAnswers(Id INTEGER PRIMARY KEY NOT NULL, TEXT,	PRIMARY KEY("Id" AUTOINCREMENT))';
-
-  //console.log('createString', createString);
-
-  db.transaction(txn => {
-    txn.executeSql(
-      createString,
-      params,
-      (trans, results) => {
-        //  console.log('execute success results: ' + JSON.stringify(results));
-        //  console.log('execute success transaction: ' + JSON.stringify(trans));
-      },
-      error => {
-        console.log('execute error: ' + JSON.stringify(error));
-        // reject(error);
-      },
-    );
-
-    if (singleAnswer !== '') {
-      txn.executeSql(
-        'INSERT INTO AllAnswers (answer) VALUES ( "' + singleAnswer + '")',
-        [],
-      );
-    }
-    //  txn.executeSql('INSERT INTO AllAnswers (answer) VALUES ("222*2=456")', []);
-
-    txn.executeSql('SELECT answer FROM AllAnswers', [], function (tx, result) {
-      for (let i = 0; i < result.rows.length; ++i) {
-        var data = result.rows.item(i);
-        listAnswers.push(data); //add data to the list
-        console.log('DbOp each item:', data);
+export const LoadDB = () => {
+  const db = SQLite.openDatabase('calcDB.db', '1.0', '', 1);
+  db.transaction(function (txn) {
+    // txn.executeSql('DROP TABLE IF EXISTS Users', [])
+    // txn.executeSql(
+    //   'CREATE TABLE IF NOT EXISTS Users(user_id INTEGER PRIMARY KEY NOT NULL, calc VARCHAR(30))',
+    //   []
+    // )
+    txn.executeSql('INSERT INTO Users (calc) VALUES (:calc)', ['1+2=3']);
+    txn.executeSql('INSERT INTO Users (calc) VALUES (:calc)', ['4-2=2']);
+    txn.executeSql('SELECT * FROM `users`', [], function (tx, res) {
+      for (let i = 0; i < res.rows.length; ++i) {
+        console.log('item:', res.rows.item(i));
+        setlistAnswers(...listAnswers, res.rows.item(i));
       }
-      //check if its there
-      listAnswers.map(item => {
-        console.log('DbOp listAnswers', item);
-      });
     });
   });
 

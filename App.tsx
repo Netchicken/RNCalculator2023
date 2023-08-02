@@ -1,12 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React, {useState} from 'react';
-
 import {
   View,
   SafeAreaView,
@@ -16,10 +7,11 @@ import {
   ImageBackground,
 } from 'react-native';
 
+import React, {useState} from 'react';
 import {CalcButtons} from './Components/CalcButtons';
 import {NumberButtons} from './Components/NumberButton';
-import {DbButtons} from './Components/DbButtons';
-import {GetDb, PassData} from './Operations/DbOperations';
+// import {DbButtons} from './Components/DbButtons';
+import {LoadDB} from './Operations/DbOperations';
 
 function App(): JSX.Element {
   const [calculation, setCalculation] = useState('');
@@ -81,7 +73,7 @@ function App(): JSX.Element {
               <CalcButtons updateCalculation={updateCalculation} />
               <NumberButtons updateCalculation={updateCalculation} />
               {/* <DbButtons sqlOperation={sqlOperation} /> */}
-              {/* <GetDb /> */}
+              <LoadDB />
             </View>
           </ScrollView>
         </SafeAreaView>

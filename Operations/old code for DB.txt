@@ -1,0 +1,67 @@
+const databaseName = 'calcDB.db';
+const tableName = 'AllAnswers';
+const fieldName = 'answer';
+let db;
+const listAnswers = [];
+let singleAnswer = '';
+//https://medium.com/infinitbility/react-native-sqlite-storage-422503634dd2
+
+//https://github.com/craftzdog/react-native-sqlite-2#readme
+
+export const PassData = ({data}) => {
+  singleAnswer = data;
+};
+
+export const GetDb = () => {
+  db = SQLite.openDatabase({
+    name: 'calcDB',
+    location: 'default',
+    createFromLocation: '~calcDB.db',
+  });
+  console.log(
+    'getDb Answers db',
+    JSON.stringify(db) + ' ' + JSON.stringify(singleAnswer),
+  );
+
+  let params = [];
+  // const createString2 =
+  //   'CREATE TABLE "AllAnswers" ("Id"	INTEGER NOT NULL UNIQUE,	"answer"	TEXT,	PRIMARY KEY("Id" AUTOINCREMENT))';
+  const createString =
+    'CREATE TABLE IF NOT EXISTS AllAnswers(Id INTEGER PRIMARY KEY NOT NULL, TEXT,	PRIMARY KEY("Id" AUTOINCREMENT))';
+
+  //console.log('createString', createString);
+
+  db.transaction(txn => {
+    txn.executeSql(
+      createString,
+      params,
+      (trans, results) => {
+        //  console.log('execute success results: ' + JSON.stringify(results));
+        //  console.log('execute success transaction: ' + JSON.stringify(trans));
+      },
+      error => {
+        console.log('execute error: ' + JSON.stringify(error));
+        // reject(error);
+      },
+    );
+
+    if (singleAnswer !== '') {
+      txn.executeSql(
+        'INSERT INTO AllAnswers (answer) VALUES ( "' + singleAnswer + '")',
+        [],
+      );
+    }
+    //  txn.executeSql('INSERT INTO AllAnswers (answer) VALUES ("222*2=456")', []);
+
+    txn.executeSql('SELECT answer FROM AllAnswers', [], function (tx, result) {
+      for (let i = 0; i < result.rows.length; ++i) {
+        var data = result.rows.item(i);
+        listAnswers.push(data); //add data to the list
+        console.log('DbOp each item:', data);
+      }
+      //check if its there
+      listAnswers.map(item => {
+        console.log('DbOp listAnswers', item);
+      });
+    });
+  });
