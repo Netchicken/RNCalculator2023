@@ -17,7 +17,7 @@ import {TouchableOpacityButton} from '../Components/AllButtons';
 const Calculator = ({navigation}) => {
   const [calculation, setCalculation] = useState('');
 
-  const updateCalculation = ({value}) => {
+  const updateCalculation = value => {
     // alert('updateCalculation' + ' ' + value + ' ' + calculation);
     setCalculation(calculation + String(value)); //add the value to the growing string
     console.log('updateCalculation all', calculation);

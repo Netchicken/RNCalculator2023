@@ -1,17 +1,16 @@
 import {React, useState} from 'react';
 import SQLite from 'react-native-sqlite-2';
 import {
-  StyleSheet, // CSS-like styles
-  Text, // Renders text
-  //TouchableOpacity,  Handles row presses
+  View,
   SafeAreaView,
   ScrollView,
-  View,
-  //Section,
+  StyleSheet,
+  Text,
+  ImageBackground,
 } from 'react-native';
-
-const [listAnswers, setlistAnswers] = useState([]);
-
+import {TouchableOpacityButton} from '../Components/AllButtons';
+//const [listAnswers, setlistAnswers] = useState([]);
+let alldata = [];
 //Database functions
 //value = the new answer to be added to the database
 // const sqlOperation = (value: Data) => {
@@ -32,6 +31,7 @@ const [listAnswers, setlistAnswers] = useState([]);
 
 export const LoadDB = ({navigation}) => {
   const db = SQLite.openDatabase('calcDB.db', '1.0', '', 1);
+
   db.transaction(function (txn) {
     txn.executeSql('DROP TABLE IF EXISTS AllAnswers', []);
     txn.executeSql(
@@ -42,39 +42,55 @@ export const LoadDB = ({navigation}) => {
     txn.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['4-2=2']);
     txn.executeSql('SELECT * FROM `AllAnswers`', [], function (tx, res) {
       for (let i = 0; i < res.rows.length; ++i) {
-        console.log('item:', res.rows.item(i));
-        setlistAnswers(...listAnswers, res.rows.item(i));
+        console.log('item:', res.rows.item(i).calc);
+        alldata.push(res.rows.item(i).value);
       }
+      console.log('alldata length = ', alldata.length);
+      console.log('alldata values = ', Object.values(alldata));
+      console.log('alldata[1] = ', alldata[1]);
     });
   });
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        {listAnswers.map((item, index) => {
-          return (
-            <View>
-              <Text key={index} style={styles.text}>
-                {item}
+    <ImageBackground
+      resizeMode="cover"
+      source={require('../Assets/bgImage.jpg')}
+      style={styles.image}>
+      <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+          <ScrollView>
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>
+                Database Page {alldata[1]}
               </Text>
             </View>
-          );
-        })}
-        <TouchableOpacityButton
-          onPress={() => navigation.navigate('Calculator')}
-          title="Go to Calculator"
-        />
-      </ScrollView>
-    </SafeAreaView>
+
+            {alldata.map((item, index) => {
+              return (
+                <View>
+                  <Text key={index} style={styles.text}>
+                    {item}
+                  </Text>
+                </View>
+              );
+            })}
+            <TouchableOpacityButton
+              onPress={() => navigation.navigate('Calculator')}
+              title="Go to Calculator"
+            />
+          </ScrollView>
+        </SafeAreaView>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    margin: 2,
-  },
+  // text: {
+  //   fontSize: 20,
+  //   fontWeight: 'bold',
+  //   margin: 2,
+  // },
   container: {
     flex: 1,
     justifyContent: 'center',
