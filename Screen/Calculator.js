@@ -42,7 +42,7 @@ const Calculator = ({navigation}) => {
   return (
     <ImageBackground
       resizeMode="cover"
-      source={require('./Assets/bgImage.jpg')}
+      source={require('../Assets/bgImage.jpg')}
       style={styles.image}>
       <View style={styles.container}>
         <SafeAreaView>

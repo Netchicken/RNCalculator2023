@@ -1,4 +1,4 @@
-import 'react-native-gesture-handler'; //this must be first
+//import 'react-native-gesture-handler'; //this must be first
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
