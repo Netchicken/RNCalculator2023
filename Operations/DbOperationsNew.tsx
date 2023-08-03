@@ -16,13 +16,15 @@ import type {
   SQLError,
 } from 'react-native-sqlite-2';
 
+//https://github.com/craftzdog/react-native-sqlite-2/blob/master/example/src/App.tsx
+
 function databaseName(name: string) {
   return name + '.' + Math.floor(Math.random() * 100000);
 }
 
 const database_name = 'test.db';
 const database_version = '1.0';
-const database_displayname = 'SQLite Calculation Database';
+const database_displayname = 'SQLite Test Database';
 const database_size = 200000;
 
 interface Props {}

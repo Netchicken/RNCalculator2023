@@ -30,17 +30,17 @@ const [listAnswers, setlistAnswers] = useState([]);
 // }
 // };
 
-export const LoadDB = () => {
+export const LoadDB = ({navigation}) => {
   const db = SQLite.openDatabase('calcDB.db', '1.0', '', 1);
   db.transaction(function (txn) {
-    // txn.executeSql('DROP TABLE IF EXISTS Users', [])
-    // txn.executeSql(
-    //   'CREATE TABLE IF NOT EXISTS Users(user_id INTEGER PRIMARY KEY NOT NULL, calc VARCHAR(30))',
-    //   []
-    // )
-    txn.executeSql('INSERT INTO Users (calc) VALUES (:calc)', ['1+2=3']);
-    txn.executeSql('INSERT INTO Users (calc) VALUES (:calc)', ['4-2=2']);
-    txn.executeSql('SELECT * FROM `users`', [], function (tx, res) {
+    txn.executeSql('DROP TABLE IF EXISTS AllAnswers', []);
+    txn.executeSql(
+      'CREATE TABLE IF NOT EXISTS AllAnswers(user_id INTEGER PRIMARY KEY NOT NULL, calc VARCHAR(30))',
+      [],
+    );
+    txn.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['1+2=3']);
+    txn.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['4-2=2']);
+    txn.executeSql('SELECT * FROM `AllAnswers`', [], function (tx, res) {
       for (let i = 0; i < res.rows.length; ++i) {
         console.log('item:', res.rows.item(i));
         setlistAnswers(...listAnswers, res.rows.item(i));
@@ -50,21 +50,6 @@ export const LoadDB = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Section
-        style={styles.sectionTitle}
-        title="View calculations in the Database"></Section> */}
-
-      {/* <TouchableOpacity
-        // onPress={() => selectDataHandler()}
-        style={styles.UpdateButton}>
-        <Text style={styles.UpdateButtonText}>Show Cities</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        // onPress={() => removeDataHandler()}
-        style={styles.DeleteButton}>
-        <Text style={styles.DeleteButtonText}>Delete All Cities</Text>
-      </TouchableOpacity> */}
-
       <ScrollView>
         {listAnswers.map((item, index) => {
           return (
@@ -75,6 +60,10 @@ export const LoadDB = () => {
             </View>
           );
         })}
+        <TouchableOpacityButton
+          onPress={() => navigation.navigate('Calculator')}
+          title="Go to Calculator"
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -129,3 +118,22 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+{
+  /* <Section
+        style={styles.sectionTitle}
+        title="View calculations in the Database"></Section> */
+}
+
+{
+  /* <TouchableOpacity
+        // onPress={() => selectDataHandler()}
+        style={styles.UpdateButton}>
+        <Text style={styles.UpdateButtonText}>Show Cities</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        // onPress={() => removeDataHandler()}
+        style={styles.DeleteButton}>
+        <Text style={styles.DeleteButtonText}>Delete All Cities</Text>
+      </TouchableOpacity> */
+}

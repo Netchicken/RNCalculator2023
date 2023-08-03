@@ -1,38 +1,23 @@
+import React, {useState} from 'react';
 import {
+  View,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  View,
   ImageBackground,
-  FlatList,
 } from 'react-native';
-import {React, useState} from 'react';
-import {calcButtons} from './Components/CalcButtons';
-import {numberButtons} from './Components/NumberButton';
-import {dbButtons} from './Components/DbButtons';
-import {GetDb, PassData} from './Screen/DbOperations';
 
-//https://towardsdev.com/how-to-build-a-calculator-app-using-react-native-a-step-by-step-tutorial-40ae327fae5f
+import {CalcButtons} from '../Components/CalcButtons';
+import {NumberButtons} from '../Components/NumberButton';
+import {TouchableOpacityButton} from '../Components/AllButtons';
 
-const App = () => {
+// import {LoadDB} from '../Operations/DbOperations';
+
+const Calculator = ({navigation}) => {
   const [calculation, setCalculation] = useState('');
-  let DbDisplay = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      answer: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      answer: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      answer: 'Third Item',
-    },
-  ];
 
-  const updateCalculation = value => {
+  const updateCalculation = ({value}) => {
     // alert('updateCalculation' + ' ' + value + ' ' + calculation);
     setCalculation(calculation + String(value)); //add the value to the growing string
     console.log('updateCalculation all', calculation);
@@ -53,28 +38,11 @@ const App = () => {
       setCalculation(result);
     }
   };
-  //Database functions
-  //value = the new answer to be added to the database
-  const sqlOperation = value => {
-    console.log('App sqlOperation ', value);
-    // let result = [];
-    if (value === 'Display') {
-      PassData(value);
-    }
-    //console.log('App sqlOperation ', JSON.stringify(res));
-
-    // DbDisplay = [result];
-
-    // DbDisplay.map((item, index) => {
-    //   console.log('App DbDisplay ', item.answer);
-    // });
-    // }
-  };
 
   return (
     <ImageBackground
       resizeMode="cover"
-      //   source={require('./Assets/bgImage.jpg')}
+      source={require('./Assets/bgImage.jpg')}
       style={styles.image}>
       <View style={styles.container}>
         <SafeAreaView>
@@ -86,11 +54,14 @@ const App = () => {
                   {calculation || 'Enter a number'}
                 </Text>
               </View>
-              <calcButtons updateCalculation={updateCalculation} />
-              <numberButtons updateCalculation={updateCalculation} />
-              <dbButtons sqlOperation={sqlOperation} />
-              <GetDb />
+              <CalcButtons updateCalculation={updateCalculation} />
+              <NumberButtons updateCalculation={updateCalculation} />
+              {/* <DbButtons sqlOperation={sqlOperation} /> */}
             </View>
+            <TouchableOpacityButton
+              onPress={() => navigation.navigate('Database')}
+              title="Go to Database"
+            />
           </ScrollView>
         </SafeAreaView>
       </View>
@@ -99,6 +70,23 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
+  },
+
   liContainer: {
     backgroundColor: '#fff',
     flex: 1,
@@ -136,16 +124,9 @@ const styles = StyleSheet.create({
   outputText: {
     fontWeight: 'bold',
     textAlignVertical: 'center',
-    textAlignment: 'right',
+    // textAlignment: 'right',
     fontSize: 30,
-  },
-
-  sectionTitle: {
-    color: 'white',
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlignVertical: 'center',
   },
 });
 
-export default App;
+export default Calculator;
