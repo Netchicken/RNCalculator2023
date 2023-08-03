@@ -15,7 +15,6 @@ import {
 //https://github.com/craftzdog/react-native-sqlite-2#readme
 
 let alldata = [];
-
 export const LoadDB = ({navigation}) => {
   const db = SQLite.openDatabase('calcDB.db', '1.0', '', 1);
 
@@ -30,15 +29,25 @@ export const LoadDB = ({navigation}) => {
     txn.executeSql('SELECT * FROM `AllAnswers`', [], function (tx, res) {
       for (let i = 0; i < res.rows.length; ++i) {
         console.log('item:', res.rows.item(i).calc);
-        alldata.push(res.rows.item(i).calc);
+        console.log('user_id:', res.rows.item(i).user_id);
+        let input = res.rows.item(i); //JSON.stringify(res.rows.item(i));
+        console.log('input', input);
+        console.log('input calc', input.calc);
+        alldata.push(input);
       }
       console.log('alldata length = ', alldata.length);
       console.log('alldata values = ', Object.values(alldata));
       console.log('alldata[1] = ', alldata[1]);
     });
   });
-  // setlistAnswers(alldata);
-  // console.log('listAnswers = ', listAnswers);
+
+  const DeleteEntry = ({ user_id }) => {
+    db.transaction(function (txn) {
+      txn.executeSql('DELETE FROM AllAnswers WHERE user_id =', [user_id]);
+      console.log('Delete  = ', user_id);
+    });
+  };
+ 
 
   return (
     <ImageBackground
@@ -55,12 +64,12 @@ export const LoadDB = ({navigation}) => {
                     <View>
                       <PressableButton
                         key={index}
-                         onPress={aaa}
-                        symbol={item}
+                        onPress={DeleteEntry(item.user_id)}
+                        symbol={item.calc}
                       />
 
                       <Text key={index} style={styles.sectionTitle}>
-                        {item}
+                        {item.calc}
                       </Text>
                     </View>
                   );
