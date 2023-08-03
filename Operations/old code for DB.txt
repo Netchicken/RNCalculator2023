@@ -4,7 +4,7 @@ const fieldName = 'answer';
 let db;
 const listAnswers = [];
 let singleAnswer = '';
-//https://medium.com/infinitbility/react-native-sqlite-storage-422503634dd2
+
 
 //https://github.com/craftzdog/react-native-sqlite-2#readme
 

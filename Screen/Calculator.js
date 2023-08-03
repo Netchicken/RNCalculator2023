@@ -59,8 +59,8 @@ const Calculator = ({navigation}) => {
               {/* <DbButtons sqlOperation={sqlOperation} /> */}
             </View>
             <TouchableOpacityButton
+              text="Go to Database"
               onPress={() => navigation.navigate('Database')}
-              title="Go to Database"
             />
           </ScrollView>
         </SafeAreaView>

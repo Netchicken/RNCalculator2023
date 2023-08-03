@@ -8,26 +8,13 @@ import {
   Text,
   ImageBackground,
 } from 'react-native';
-import {TouchableOpacityButton} from '../Components/AllButtons';
-//const [listAnswers, setlistAnswers] = useState([]);
+import {
+  TouchableOpacityButton,
+  PressableButton,
+} from '../Components/AllButtons';
+//https://github.com/craftzdog/react-native-sqlite-2#readme
+
 let alldata = [];
-//Database functions
-//value = the new answer to be added to the database
-// const sqlOperation = (value: Data) => {
-//   console.log('App sqlOperation ', value);
-//   // let result = [];
-//   if (value === 'Display') {
-//     PassData(value);
-//   }
-//console.log('App sqlOperation ', JSON.stringify(res));
-
-// DbDisplay = [result];
-
-// DbDisplay.map((item, index) => {
-//   console.log('App DbDisplay ', item.answer);
-// });
-// }
-// };
 
 export const LoadDB = ({navigation}) => {
   const db = SQLite.openDatabase('calcDB.db', '1.0', '', 1);
@@ -43,13 +30,15 @@ export const LoadDB = ({navigation}) => {
     txn.executeSql('SELECT * FROM `AllAnswers`', [], function (tx, res) {
       for (let i = 0; i < res.rows.length; ++i) {
         console.log('item:', res.rows.item(i).calc);
-        alldata.push(res.rows.item(i).value);
+        alldata.push(res.rows.item(i).calc);
       }
       console.log('alldata length = ', alldata.length);
       console.log('alldata values = ', Object.values(alldata));
       console.log('alldata[1] = ', alldata[1]);
     });
   });
+  // setlistAnswers(alldata);
+  // console.log('listAnswers = ', listAnswers);
 
   return (
     <ImageBackground
@@ -61,22 +50,27 @@ export const LoadDB = ({navigation}) => {
           <ScrollView>
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>
-                Database Page {alldata[1]}
+                {alldata.map((item, index) => {
+                  return (
+                    <View>
+                      <PressableButton
+                        key={index}
+                         onPress={aaa}
+                        symbol={item}
+                      />
+
+                      <Text key={index} style={styles.sectionTitle}>
+                        {item}
+                      </Text>
+                    </View>
+                  );
+                })}
               </Text>
             </View>
 
-            {alldata.map((item, index) => {
-              return (
-                <View>
-                  <Text key={index} style={styles.text}>
-                    {item}
-                  </Text>
-                </View>
-              );
-            })}
             <TouchableOpacityButton
               onPress={() => navigation.navigate('Calculator')}
-              title="Go to Calculator"
+              text="Go to Calculator"
             />
           </ScrollView>
         </SafeAreaView>
@@ -86,16 +80,16 @@ export const LoadDB = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  // text: {
-  //   fontSize: 20,
-  //   fontWeight: 'bold',
-  //   margin: 2,
-  // },
-  container: {
+  image: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    // flexDirection: 'column',
+    width: '100%',
+    height: '100%',
+  },
+
+  container: {
+    fontSize: 40,
+    flex: 1,
   },
 
   UpdateButton: {
@@ -141,8 +135,7 @@ const styles = StyleSheet.create({
         title="View calculations in the Database"></Section> */
 }
 
-{
-  /* <TouchableOpacity
+/* <TouchableOpacity
         // onPress={() => selectDataHandler()}
         style={styles.UpdateButton}>
         <Text style={styles.UpdateButtonText}>Show Cities</Text>
@@ -152,4 +145,21 @@ const styles = StyleSheet.create({
         style={styles.DeleteButton}>
         <Text style={styles.DeleteButtonText}>Delete All Cities</Text>
       </TouchableOpacity> */
-}
+
+//Database functions
+//value = the new answer to be added to the database
+// const sqlOperation = (value: Data) => {
+//   console.log('App sqlOperation ', value);
+//   // let result = [];
+//   if (value === 'Display') {
+//     PassData(value);
+//   }
+//console.log('App sqlOperation ', JSON.stringify(res));
+
+// DbDisplay = [result];
+
+// DbDisplay.map((item, index) => {
+//   console.log('App DbDisplay ', item.answer);
+// });
+// }
+// };
