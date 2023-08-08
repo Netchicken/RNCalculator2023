@@ -1,7 +1,7 @@
 import {React, useState} from 'react';
-import SQLite from 'react-native-sqlite-2';
-import {DatabaseConnection} from
-
+import SQLite from 'react-native-sqlite-storage';
+import {DatabaseConnection} from './Database/DbConnection';
+import DbDelete from './Database/DbDelete';
 
 import {
   View,
@@ -20,12 +20,17 @@ import {
 
 let alldata = [];
 export const LoadDB = ({navigation}) => {
-  const [refresh, setRefresh] = useState('false');
-  const db = SQLite.openDatabase('calcDB.db', '1.0', '', 1);
+  let [inputUserId, setInputUserId] = useState('');
 
-  db.transaction(function (txn) {
-    txn.executeSql('DROP TABLE IF EXISTS AllAnswers', []);
-    txn.executeSql(
+  const [refresh, setRefresh] = useState(false);
+  // const db = SQLite.openDatabase('calcDB.db', '1.0', '', 1);
+  const db = DatabaseConnection.getConnection();
+
+  db.transaction(function (tx) {
+    console.log('refresh', refresh);
+
+    tx.executeSql('DROP TABLE IF EXISTS AllAnswers', []);
+    tx.executeSql(
       'CREATE TABLE IF NOT EXISTS AllAnswers(user_id INTEGER PRIMARY KEY NOT NULL, calc VARCHAR(30))',
       [],
     );
@@ -33,38 +38,34 @@ export const LoadDB = ({navigation}) => {
     //add sample data if there isn't any
     // txn.executeSql('SELECT * FROM `AllAnswers`', [], function (tx, res) {
     //   if (res.length === 0 || res.length === 'undefined') {
-    txn.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['1+2=3']);
-    txn.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['2-2=0']);
+    if (refresh === false) {
+      tx.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['1+2=3']);
+      tx.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['2-2=0']);
+    }
+
     //     console.log('Added sample data, res.length = ', res.length);
     //   }
     // });
 
-    txn.executeSql('SELECT * FROM `AllAnswers`', [], function (tx, res) {
-      for (let i = 0; i < res.rows.length; ++i) {
-        console.log('item:', res.rows.item(i).calc);
-        console.log('user_id:', res.rows.item(i).user_id);
-        let input = res.rows.item(i); //JSON.stringify(res.rows.item(i));
+    tx.executeSql('SELECT * FROM `AllAnswers`', [], (tx, results) => {
+      for (let i = 0; i < results.rows.length; ++i) {
+        console.log('item:', results.rows.item(i).calc);
+        console.log('user_id:', results.rows.item(i).user_id);
+        let input = results.rows.item(i); //JSON.stringify(res.rows.item(i));
         console.log('input', input);
         console.log('input calc', input.calc);
         alldata.push(input);
       }
+
       console.log('alldata length = ', alldata.length);
       console.log('alldata values = ', Object.values(alldata));
       console.log('alldata[1] = ', alldata[1]);
     });
   });
 
-  const DeleteEntry = ({user_id}) => {
-    if (user_id === undefined) {
-      Alert.alert('Error', 'User Id is not defined');
-    }
-    const db = SQLite.openDatabase('calcDB.db', '1.0', '', 1);
-    db.transaction(function (txn) {
-      txn.executeSql('DELETE FROM AllAnswers WHERE user_id = ?', [user_id]);
-      console.log('Delete  = ', user_id);
-    });
-
-    //setRefresh('true');
+  const DeleteItem = id => {
+    DbDelete(id);
+    setRefresh(true);
   };
 
   return (
@@ -82,7 +83,7 @@ export const LoadDB = ({navigation}) => {
                     <View>
                       <PressableButton
                         key={index}
-                        onPress={() => DeleteEntry(item.user_id)}
+                        onPress={() => DeleteItem(item.user_id)}
                         symbol={item.calc}
                       />
 
