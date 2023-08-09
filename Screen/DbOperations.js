@@ -1,6 +1,5 @@
 import {React, useState} from 'react';
-import SQLite from 'react-native-sqlite-storage';
-import {DatabaseConnection} from './Database/DbConnection';
+import {DatabaseConnection, createTable} from './Database/DbConnection';
 import DbDelete from './Database/DbDelete';
 
 import {
@@ -23,25 +22,25 @@ export const LoadDB = ({navigation}) => {
   let [inputUserId, setInputUserId] = useState('');
 
   const [refresh, setRefresh] = useState(false);
-  // const db = SQLite.openDatabase('calcDB.db', '1.0', '', 1);
-  const db = DatabaseConnection.getConnection();
 
+  const db = createTable();
+  console.log('db', DatabaseConnection());
   db.transaction(function (tx) {
-    console.log('refresh', refresh);
+    //   console.log('refresh', refresh);
 
-    tx.executeSql('DROP TABLE IF EXISTS AllAnswers', []);
-    tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS AllAnswers(user_id INTEGER PRIMARY KEY NOT NULL, calc VARCHAR(30))',
-      [],
-    );
+    //   tx.executeSql('DROP TABLE IF EXISTS AllAnswers', []);
+    //   tx.executeSql(
+    //     'CREATE TABLE IF NOT EXISTS AllAnswers(user_id INTEGER PRIMARY KEY NOT NULL, calc VARCHAR(30))',
+    //     [],
+    //   );
 
-    //add sample data if there isn't any
-    // txn.executeSql('SELECT * FROM `AllAnswers`', [], function (tx, res) {
-    //   if (res.length === 0 || res.length === 'undefined') {
-    if (refresh === false) {
-      tx.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['1+2=3']);
-      tx.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['2-2=0']);
-    }
+    //   //add sample data if there isn't any
+    //   // txn.executeSql('SELECT * FROM `AllAnswers`', [], function (tx, res) {
+    //   //   if (res.length === 0 || res.length === 'undefined') {
+    //   if (refresh === false) {
+    //     tx.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['1+2=3']);
+    //     tx.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['2-2=0']);
+    //   }
 
     //     console.log('Added sample data, res.length = ', res.length);
     //   }
