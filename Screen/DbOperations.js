@@ -1,6 +1,6 @@
 import {React, useState} from 'react';
-import {LoadDatabase} from './Database/DbConnection';
-import DbDelete from './Database/DbDelete';
+import {LoadDatabase} from '../Operations/DbConnection';
+//import DbDelete from './Database/DbDelete';
 
 import {
   View,
@@ -16,13 +16,10 @@ import {
 } from '../Components/AllButtons';
 
 const DbOperations = ({navigation}) => {
-  const db = new LoadDatabase();
-  const alldata = db.loadData();
-
-  const DeleteItem = id => {
-    DbDelete(id);
-    setRefresh(true);
-  };
+  const db = LoadDatabase;
+  var alldata = [];
+  alldata = db;
+  console.log('alldata', alldata);
 
   return (
     <ImageBackground
