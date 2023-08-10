@@ -8,7 +8,7 @@ const database_version = '1.0';
 const database_displayname = 'SQLite React Offline Database';
 const database_size = 10000000;
 
-export class UserLocationsDatabase {
+export class LoadDatabase {
   initDB() {
     let db;
     return new Promise(async (resolve, reject) => {
