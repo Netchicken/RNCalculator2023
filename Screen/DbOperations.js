@@ -9,17 +9,15 @@ import {
   StyleSheet,
   Text,
   ImageBackground,
-  Alert,
 } from 'react-native';
 import {
   TouchableOpacityButton,
   PressableButton,
 } from '../Components/AllButtons';
-//https://github.com/craftzdog/react-native-sqlite-2#readme
 
-export const DbOperations = ({navigation}) => {
-  var db = new LoadDatabase();
-  var alldata = db.loadData();
+const DbOperations = ({navigation}) => {
+  const db = new LoadDatabase();
+  const alldata = db.loadData();
 
   const DeleteItem = id => {
     DbDelete(id);
@@ -114,6 +112,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export default DbOperations;
 
 {
   /* <Section

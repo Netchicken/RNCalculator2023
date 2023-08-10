@@ -15,7 +15,8 @@ export const DBConnection = () => {
 };
 
 export class LoadDatabase {
-  initDB = () => {
+  //this is called whenever we use a function below
+  initDB() {
     let db;
     return new Promise(async (resolve, reject) => {
       try {
@@ -34,9 +35,9 @@ export class LoadDatabase {
         console.log('error', error);
       }
     });
-  };
+  }
 
-  loadData = () => {
+  loadData() {
     return new Promise(async resolve => {
       try {
         const db = await this.initDB();
@@ -61,7 +62,7 @@ export class LoadDatabase {
               console.log('input', input);
               console.log('input calc', input.calc);
             }
-            
+
             console.log('alldata length = ', alldata.length);
             console.log('alldata values = ', Object.values(allData));
             console.log('alldata[1] = ', allData[1]);
@@ -75,7 +76,7 @@ export class LoadDatabase {
         console.log('error', error);
       }
     });
-  };
+  }
 }
 
 // export const createTable = () => {

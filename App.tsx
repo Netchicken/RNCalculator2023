@@ -2,7 +2,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
-import {LoadDB} from './Screen/DbOperations'; //these are the pages I am navigating to
+import DbOperations from './Screen/DbOperations'; //these are the pages I am navigating to
 import Calculator from './Screen/Calculator';
 
 const App = () => {
@@ -20,7 +20,7 @@ const App = () => {
         />
         <Stack.Screen
           name="Database"
-          component={LoadDB}
+          component={DbOperations}
           options={{
             title: 'Display the Database data',
           }}

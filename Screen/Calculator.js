@@ -12,7 +12,6 @@ import {CalcButtons} from '../Components/CalcButtons';
 import {NumberButtons} from '../Components/NumberButton';
 import {TouchableOpacityButton} from '../Components/AllButtons';
 
-// import {LoadDB} from '../Operations/DbOperations';
 
 const Calculator = ({navigation}) => {
   const [calculation, setCalculation] = useState('');
