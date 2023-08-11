@@ -18,7 +18,7 @@ import {
 const DbOperations = ({navigation}) => {
   let alldata = LoadDatabase();
   //alldata = db;
-  console.log('alldata[1]', alldata[1]);
+  // console.log('alldata[1]', alldata[1]);
 
   return (
     <ImageBackground

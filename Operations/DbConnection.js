@@ -3,28 +3,52 @@ import SQLite from 'react-native-sqlite-storage';
 SQLite.enablePromise(true);
 
 const initDB = () => {
-  let db;
   console.log('initDB triggered');
   return new Promise(async (resolve, reject) => {
     await SQLite.echoTest().then(() => {
-      console.log('echoTest Successful - database is open');
+      console.log('echoTest Successful');
     });
-    try {
-      // DB = SQLite.openDatabase('calcDB.db');
-      //const DB = await SQLite.openDatabase('calcDB.db', '1.0', '', 1);
-      const DB = await SQLite.openDatabase({
-        name: 'calcDB.db',
-        createFromLocation: '~calcDB.db',
-        location: 'default',
-      });
 
-      db = DB;
-      console.log('initDB data', db);
-      resolve(db); //this is our return
-    } catch (error) {
-      reject(error);
-      console.log('initDB error', error);
-    }
+    // DB = SQLite.openDatabase('calcDB.db');
+    //const DB = await SQLite.openDatabase('calcDB.db', '1.0', '', 1);
+    const db = await SQLite.openDatabase(
+      {
+        name: 'calcDB.db',
+        createFromLocation: 1,
+        location: 'default',
+      },
+      () => {
+        //========================Quick Data check========================================
+        db.transaction(async tx => {
+          tx.executeSql(
+            'CREATE TABLE IF NOT EXISTS AllAnswers(user_id INTEGER PRIMARY KEY NOT NULL, calc VARCHAR(30))',
+            [],
+          );
+          tx.executeSql('INSERT INTO AllAnswers VALUES (?)', ['1+2=3333']);
+          tx.executeSql('INSERT INTO AllAnswers  VALUES (?)', ['2-2=0000']);
+
+          tx.executeSql('SELECT answer FROM AllAnswers', [], (x, results) => {
+            const len = results.rows.length;
+            console.log('LoadDatabase in INIT len', len);
+            if (len > 0) {
+              for (let i = 0; i < len; i++) {
+                //  let answer = results.rows.item(i);
+                console.log('input', i + ' - ' + results.rows.item(i));
+              }
+            }
+          });
+        });
+        //======================End Quick Data check========================================
+
+        resolve(db); //this is our return
+        console.log('db connection success');
+      },
+      error => {
+        reject(error);
+        console.log('db connection error');
+        console.log(error);
+      },
+    );
   });
 };
 
