@@ -16,10 +16,9 @@ import {
 } from '../Components/AllButtons';
 
 const DbOperations = ({navigation}) => {
-  const db = LoadDatabase;
-  var alldata = [];
-  alldata = db;
-  console.log('alldata', alldata);
+  const alldata = LoadDatabase();
+  //alldata = db;
+  console.log('alldata[1]', alldata[1]);
 
   return (
     <ImageBackground
@@ -157,25 +156,25 @@ export default DbOperations;
 //   const db = createTable();
 //   console.log('db', DatabaseConnection());
 //   db.transaction(function (tx) {
-//     //   console.log('refresh', refresh);
+//   console.log('refresh', refresh);
 
-//     //   tx.executeSql('DROP TABLE IF EXISTS AllAnswers', []);
-//     //   tx.executeSql(
-//     //     'CREATE TABLE IF NOT EXISTS AllAnswers(user_id INTEGER PRIMARY KEY NOT NULL, calc VARCHAR(30))',
-//     //     [],
-//     //   );
+//   tx.executeSql('DROP TABLE IF EXISTS AllAnswers', []);
+//   tx.executeSql(
+//     'CREATE TABLE IF NOT EXISTS AllAnswers(user_id INTEGER PRIMARY KEY NOT NULL, calc VARCHAR(30))',
+//     [],
+//   );
 
-//     //   //add sample data if there isn't any
-//     //   // txn.executeSql('SELECT * FROM `AllAnswers`', [], function (tx, res) {
-//     //   //   if (res.length === 0 || res.length === 'undefined') {
-//     //   if (refresh === false) {
-//     //     tx.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['1+2=3']);
-//     //     tx.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['2-2=0']);
-//     //   }
+//   //add sample data if there isn't any
+//   // txn.executeSql('SELECT * FROM `AllAnswers`', [], function (tx, res) {
+//   //   if (res.length === 0 || res.length === 'undefined') {
+//   if (refresh === false) {
+//     tx.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['1+2=3']);
+//     tx.executeSql('INSERT INTO AllAnswers (calc) VALUES (:calc)', ['2-2=0']);
+//   }
 
-//     //     console.log('Added sample data, res.length = ', res.length);
-//     //   }
-//     // });
+//     console.log('Added sample data, res.length = ', res.length);
+//   }
+// });
 
 //     tx.executeSql('SELECT * FROM `AllAnswers`', [], (tx, results) => {
 //       for (let i = 0; i < results.rows.length; ++i) {
