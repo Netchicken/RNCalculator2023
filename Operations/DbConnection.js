@@ -1,14 +1,7 @@
 import {React, useState} from 'react';
 import SQLite from 'react-native-sqlite-storage';
 SQLite.enablePromise(true);
-//SQLite.DEBUG(true);
-//https://blog.logrocket.com/using-sqlite-with-react-native/
-// const db = SQLite.openDatabase('calcDB.db', '1.0', '', 1);
 
-// export const DBConnection = () => {
-//   enablePromise(true);
-//   return openDatabase('calcDB.db', '1.0', '', 1);
-// };
 const initDB = () => {
   let db;
   console.log('initDB triggered');
@@ -42,10 +35,11 @@ export const LoadDatabase = () => {
   return new Promise(async resolve => {
     try {
       const db = await initDB();
-      let allData = [];
+
       console.log('LoadDatabase promise triggered', db);
       db.transaction(async tx => {
         try {
+          let allData = [];
           await tx.executeSql('SELECT * FROM AllAnswers', [], (x, results) => {
             const len = results.rows.length;
             console.log('LoadDatabase len', len);
@@ -75,6 +69,15 @@ export const LoadDatabase = () => {
     }
   });
 };
+
+//SQLite.DEBUG(true);
+//https://blog.logrocket.com/using-sqlite-with-react-native/
+// const db = SQLite.openDatabase('calcDB.db', '1.0', '', 1);
+
+// export const DBConnection = () => {
+//   enablePromise(true);
+//   return openDatabase('calcDB.db', '1.0', '', 1);
+// };
 
 // export const createTable = () => {
 //   var db = DatabaseConnection();

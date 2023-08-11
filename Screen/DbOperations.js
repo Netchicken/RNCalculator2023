@@ -16,7 +16,7 @@ import {
 } from '../Components/AllButtons';
 
 const DbOperations = ({navigation}) => {
-  const alldata = LoadDatabase();
+  let alldata = LoadDatabase();
   //alldata = db;
   console.log('alldata[1]', alldata[1]);
 
